@@ -1,91 +1,97 @@
 # CLAUDE.md
 
-Contexte et règles pour bosser sur ce projet avec Claude Code.
+Context and rules for working on this project with Claude Code.
 
-## Le projet
+## The project
 
-Boîte à outils PDF qui tourne 100% dans le navigateur. Aucun serveur, aucun upload, les fichiers ne quittent jamais la machine. Inspiré d'iLovePDF mais sans le côté "on envoie tes fichiers sur nos serveurs". C'est l'argument central : tout est local.
+A PDF toolbox that runs 100% in the browser. No server, no upload, files never leave the user's machine. Inspired by iLovePDF but without the "we send your files to our servers" part. That's the core selling point: everything is local.
 
-Hébergé sur GitHub Pages. Username GitHub : ely-h.
+Hosted on GitHub Pages. GitHub username: ely-h.
 
-## Stack imposée
+## Languages
+
+- Code, comments, docstrings, and commit messages: English.
+- UI text shown to the user (buttons, labels, descriptions, errors): French.
+
+## Stack (fixed)
 
 - Vite + React 19 + TypeScript strict
-- Tailwind v4 (import unique dans index.css, pas de tailwind.config.js)
-- react-router-dom, une route par outil
-- Pas de state global. State local par page. Pas de Zustand, pas de Redux.
-- Le moins de dépendances possible. Avant d'ajouter une lib, vérifier qu'elle est vraiment nécessaire.
+- Tailwind v4 (single import in index.css, no tailwind.config.js)
+- react-router-dom, one route per tool
+- No global state. Local state per page. No Zustand, no Redux.
+- As few dependencies as possible. Before adding a lib, check it's truly needed.
 
-### Libs de traitement (lazy-load par outil via dynamic import)
+### Processing libs (lazy-loaded per tool via dynamic import)
 
-- pdf-lib : manipulation PDF (merge, split, rotate, delete, watermark, numéros, images→PDF, chiffrement)
-- pdfjs-dist : rendu PDF→canvas (PDF→JPG, extraction images, miniatures)
-- mammoth : .docx → HTML pour Word→PDF
+- pdf-lib: PDF manipulation (merge, split, rotate, delete, watermark, page numbers, images to PDF, encryption)
+- pdfjs-dist: PDF to canvas rendering (PDF to JPG, image extraction, thumbnails)
+- mammoth: .docx to HTML for Word to PDF
 
-La home doit rester légère : aucune lib de traitement chargée tant qu'on n'ouvre pas un outil.
+The home page must stay light: no processing lib loaded until a tool is opened.
 
-## Règles de code
+## Code rules
 
-- TypeScript strict, pas de `any`. Si un type de lib externe manque, le déclarer proprement.
-- Toute la logique de traitement PDF vit dans `src/lib/`, en fonctions pures testables. L'UI appelle ces fonctions, elle ne fait pas de traitement elle-même.
-- Composants factorisés dès le départ : Dropzone, FileList, PageGrid, DownloadButton, Spinner. Ne pas réécrire un dropzone dans chaque outil.
-- Drag & drop pour réordonner : HTML5 natif d'abord. N'ajouter dnd-kit que si le natif devient ingérable.
-- Gérer les erreurs : PDF corrompu, fichier non-PDF, PDF chiffré sans mot de passe. Message clair à l'user, pas de crash.
-- Spinner pendant tout traitement lourd. Bloquer le bouton pendant le travail.
+- TypeScript strict, no \`any\`. If an external lib type is missing, declare it properly.
+- All PDF processing logic lives in \`src/lib/\`, as pure testable functions. The UI calls these functions, it never does processing itself.
+- Factor components from the start: Dropzone, FileList, PageGrid, DownloadButton, Spinner. Do not rewrite a dropzone in each tool.
+- Drag & drop reordering: native HTML5 first. Only add dnd-kit if native becomes unmanageable.
+- Handle errors: corrupted PDF, non-PDF file, encrypted PDF without password. Clear message to the user (in French), no crash.
+- Spinner during any heavy processing. Disable the button while working.
 
-## Pattern de chaque outil
+## Tool pattern
 
 1. Dropzone
-2. Preview / liste (miniatures si pertinent)
-3. Options spécifiques
-4. Bouton traiter → spinner
-5. Bouton télécharger
+2. Preview / list (thumbnails when relevant)
+3. Tool-specific options
+4. Process button, with spinner
+5. Download button
 
-## Compress PDF — logique
+## Compress PDF logic
 
-Pas de Ghostscript (impossible en client léger). Approche hybride cachée derrière un curseur unique :
-- Détecter les images du PDF
-- Ré-encoder les images via canvas en JPEG qualité réglée par le curseur
-- Nettoyer/recompresser les streams avec pdf-lib
-- Sur PDF texte sans image : nettoyage pdf-lib seul, gain faible, c'est normal
+No Ghostscript (not feasible in a light client). Hybrid approach hidden behind a single slider:
+- Detect the PDF's images
+- Re-encode images via canvas to JPEG at quality set by the slider
+- Clean / recompress streams with pdf-lib
+- On image-free PDFs: pdf-lib cleanup only, low gain, that's expected
 
-## Word to PDF — limites assumées
+## Word to PDF, accepted limits
 
-mammoth parse le .docx en HTML, puis rendu en PDF. Afficher un bandeau clair : rendu correct sur docs simples, mise en page complexe non garantie. Ne pas survendre.
+mammoth parses the .docx to HTML, then it's rendered to PDF. Show a clear banner: good rendering on simple docs only, complex layouts not guaranteed. Do not oversell.
 
-## Hors scope — ne pas implémenter
+## Out of scope, do not implement
 
-- PDF to Word (impossible proprement sans serveur)
+- PDF to Word (not feasible properly without a server)
 - OCR
-- Signature électronique
-- Édition de texte dans le PDF
+- Electronic signature
+- Text editing inside the PDF
 
-Si une de ces idées revient, le dire et proposer une alternative, ne pas se lancer.
+If one of these comes up, say so and propose an alternative, don't start it.
 
-## Préférences de l'autrice (Elyssa)
+## Author preferences (Elyssa)
 
-- Communication en français, direct, sans blabla.
-- Pas de tirets cadratins (—) ni longs tirets dans le code, les commentaires ou les textes UI.
-- Pas de phrasé qui sonne IA, pas de remplissage motivant. Phrases courtes.
-- Corriger les vraies erreurs sans hésiter, ne pas flatter.
-- Patches ciblés quand on modifie : ne pas réécrire un fichier entier pour changer trois lignes.
+- Talk to her in French, direct, no filler.
+- No em-dashes anywhere (code, comments, UI text).
+- No AI-sounding phrasing, no motivational padding. Short sentences.
+- Fix real mistakes without hesitation, don't flatter.
+- Targeted patches when editing: don't rewrite a whole file to change three lines.
 
-## Style visuel
+## Visual style
 
-- Cartes blanches arrondies, ombre douce, icône colorée par outil, titre gras, description grise.
-- Accent couleur par catégorie : orange (organiser), vert (optimiser), bleu (convertir).
-- Sobre et propre. Bandeau de confiance en home : traitement 100% local.
+- White rounded cards, soft shadow, colored icon per tool, bold title, grey description.
+- Accent color per category: orange (organize), green (optimize), blue (convert).
+- Clean and sober. Trust banner on the home: 100% local processing.
 
-## Déploiement
+## Deployment
 
-- `base` dans vite.config.ts = nom du repo.
-- GitHub Actions build + deploy sur gh-pages.
-- Remote double GitLab/GitHub possible comme d'habitude, miroir GitHub username ely-h.
+- \`base\` in vite.config.ts = repo name.
+- GitHub Actions build + deploy to gh-pages.
 
-## Workflow Git
+## Git workflow
 
-- Commits clairs et atomiques, un outil ou une feature par commit.
-- Pas de commit de node_modules ni de dist.
-- Une branche par outil ou par feature. Jamais de dev direct sur main.
-- Nommage : feat/<nom-outil> ou chore/<tache>. Ex: feat/merge-pdf, chore/scaffold.
-- Commit atomiques sur la branche, puis merge dans main une fois l'étape validée.
+- Code, comments, and commit messages in English.
+- One branch per tool or feature. Never commit directly to main.
+- Branch naming: feat/<tool-name> or chore/<task>. Ex: feat/merge-pdf, chore/scaffold.
+- Atomic commits on the branch, then merge into main once the step is validated.
+- Never set yourself as author or co-author. No "Co-authored-by", no mention of Claude or any tool in commit messages. Elyssa is the sole author.
+- Commit messages: plain, factual, English, no signature, no emoji.
+- Never commit node_modules or dist.
