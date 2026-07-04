@@ -64,6 +64,164 @@ export async function splitBurst(file: File, pageNums: number[]): Promise<Blob[]
   return blobs
 }
 
+export async function rotatePdf(
+  file: File,
+  rotationDeltas: Map<number, number>,
+): Promise<Blob> {
+  const hasRotation = [...rotationDeltas.values()].some((d) => d !== 0)
+  if (!hasRotation) return new Blob([await file.arrayBuffer()], { type: 'application/pdf' })
+
+  const { PDFDocument, degrees } = await import('pdf-lib')
+  let doc: Awaited<ReturnType<typeof PDFDocument.load>>
+  try {
+    doc = await PDFDocument.load(await file.arrayBuffer())
+  } catch {
+    throw new Error('Fichier corrompu ou non lisible.')
+  }
+
+  for (const [pageNum, delta] of rotationDeltas) {
+    if (delta === 0) continue
+    const page = doc.getPage(pageNum - 1)
+    const current = page.getRotation().angle
+    page.setRotation(degrees((current + delta + 360) % 360))
+  }
+
+  return new Blob([await doc.save()], { type: 'application/pdf' })
+}
+
+export async function deletePages(file: File, pageNums: number[]): Promise<Blob> {
+  const { PDFDocument } = await import('pdf-lib')
+  let src: Awaited<ReturnType<typeof PDFDocument.load>>
+  try {
+    src = await PDFDocument.load(await file.arrayBuffer())
+  } catch {
+    throw new Error('Fichier corrompu ou non lisible.')
+  }
+  const total = src.getPageCount()
+  const deleteSet = new Set(pageNums)
+  const keepIndices = Array.from({ length: total }, (_, i) => i).filter(
+    (i) => !deleteSet.has(i + 1),
+  )
+  if (keepIndices.length === 0) throw new Error('Impossible de supprimer toutes les pages.')
+
+  const out = await PDFDocument.create()
+  const copied = await out.copyPages(src, keepIndices)
+  copied.forEach((p) => out.addPage(p))
+  return new Blob([await out.save()], { type: 'application/pdf' })
+}
+
+export async function imagesToPdf(files: File[]): Promise<Blob> {
+  const { PDFDocument } = await import('pdf-lib')
+  const doc = await PDFDocument.create()
+
+  for (const f of files) {
+    const bytes = new Uint8Array(await f.arrayBuffer())
+    const isPng = f.type === 'image/png' || f.name.toLowerCase().endsWith('.png')
+    const img = isPng ? await doc.embedPng(bytes) : await doc.embedJpg(bytes)
+    const page = doc.addPage([img.width, img.height])
+    page.drawImage(img, { x: 0, y: 0, width: img.width, height: img.height })
+  }
+
+  return new Blob([await doc.save()], { type: 'application/pdf' })
+}
+
+type PageNumPosition =
+  | 'top-left'
+  | 'top-center'
+  | 'top-right'
+  | 'bottom-left'
+  | 'bottom-center'
+  | 'bottom-right'
+
+type PageNumFormat = 'arabic' | 'roman-lower' | 'roman-upper'
+
+function toRoman(n: number): string {
+  const vals = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]
+  const syms = ['M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I']
+  let result = ''
+  for (let i = 0; i < vals.length; i++) {
+    while (n >= vals[i]) { result += syms[i]; n -= vals[i] }
+  }
+  return result
+}
+
+function formatPageNum(n: number, format: PageNumFormat): string {
+  if (format === 'arabic') return String(n)
+  const roman = toRoman(Math.max(1, n))
+  return format === 'roman-lower' ? roman.toLowerCase() : roman
+}
+
+export async function addPageNumbers(
+  file: File,
+  options: { position: PageNumPosition; startAt: number; fontSize: number; format: PageNumFormat },
+): Promise<Blob> {
+  const { PDFDocument, rgb, StandardFonts } = await import('pdf-lib')
+  let doc: Awaited<ReturnType<typeof PDFDocument.load>>
+  try {
+    doc = await PDFDocument.load(await file.arrayBuffer())
+  } catch {
+    throw new Error('Fichier corrompu ou non lisible.')
+  }
+
+  const font = await doc.embedFont(StandardFonts.Helvetica)
+  const margin = 22
+
+  for (let i = 0; i < doc.getPageCount(); i++) {
+    const page = doc.getPage(i)
+    const { width, height } = page.getSize()
+    const text = formatPageNum(i + options.startAt, options.format)
+    const textWidth = font.widthOfTextAtSize(text, options.fontSize)
+    const pos = options.position
+
+    const x = pos.includes('left')
+      ? margin
+      : pos.includes('center')
+        ? (width - textWidth) / 2
+        : width - textWidth - margin
+
+    const y = pos.startsWith('top')
+      ? height - options.fontSize - margin
+      : margin
+
+    page.drawText(text, { x, y, size: options.fontSize, font, color: rgb(0.35, 0.35, 0.35) })
+  }
+
+  return new Blob([await doc.save()], { type: 'application/pdf' })
+}
+
+export async function addWatermark(
+  file: File,
+  options: { text: string; opacity: number; angle: number; fontSize: number },
+): Promise<Blob> {
+  const { PDFDocument, rgb, StandardFonts, degrees } = await import('pdf-lib')
+  let doc: Awaited<ReturnType<typeof PDFDocument.load>>
+  try {
+    doc = await PDFDocument.load(await file.arrayBuffer())
+  } catch {
+    throw new Error('Fichier corrompu ou non lisible.')
+  }
+
+  const font = await doc.embedFont(StandardFonts.HelveticaBold)
+
+  for (let i = 0; i < doc.getPageCount(); i++) {
+    const page = doc.getPage(i)
+    const { width, height } = page.getSize()
+    const textWidth = font.widthOfTextAtSize(options.text, options.fontSize)
+
+    page.drawText(options.text, {
+      x: width / 2 - textWidth / 2,
+      y: height / 2,
+      size: options.fontSize,
+      font,
+      color: rgb(0.4, 0.4, 0.4),
+      opacity: options.opacity,
+      rotate: degrees(options.angle),
+    })
+  }
+
+  return new Blob([await doc.save()], { type: 'application/pdf' })
+}
+
 export async function compressPdf(file: File, compress: number): Promise<Blob> {
   // compress 0 = max quality, 100 = max compression
   const jpegQ = Math.max(0.05, 1 - (compress / 100) * 0.92)

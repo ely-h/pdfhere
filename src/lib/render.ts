@@ -50,3 +50,26 @@ export async function renderToCanvases(file: File, scale: number): Promise<HTMLC
   await doc.cleanup()
   return canvases
 }
+
+export async function renderToJpegs(file: File, quality = 0.88): Promise<Blob[]> {
+  const lib = await pdfjs()
+  const doc = await lib.getDocument({ data: await file.arrayBuffer() }).promise
+  const blobs: Blob[] = []
+
+  for (let n = 1; n <= doc.numPages; n++) {
+    const page = await doc.getPage(n)
+    const vp = page.getViewport({ scale: 2 })
+    const canvas = document.createElement('canvas')
+    canvas.width = vp.width
+    canvas.height = vp.height
+    await page.render({ canvas, viewport: vp }).promise
+    const blob = await new Promise<Blob>((resolve) =>
+      canvas.toBlob((b) => resolve(b!), 'image/jpeg', quality),
+    )
+    blobs.push(blob)
+    page.cleanup()
+  }
+
+  await doc.cleanup()
+  return blobs
+}
