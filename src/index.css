@@ -791,6 +791,48 @@ body {
   border: 1px solid var(--line);
 }
 
+/* ---- Word to PDF preview ---- */
+.docpreview {
+  background: var(--surf);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 30px 34px;
+  max-height: 540px;
+  overflow-y: auto;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: #1a1a1a;
+  margin-top: 18px;
+}
+
+.docpreview h1 { font-size: 21px; font-weight: bold; margin: 0 0 12px; }
+.docpreview h2 { font-size: 17px; font-weight: bold; margin: 16px 0 6px; }
+.docpreview h3 { font-size: 14px; font-weight: bold; margin: 12px 0 4px; }
+.docpreview h4, .docpreview h5, .docpreview h6 { font-size: 13.5px; font-weight: bold; margin: 10px 0 4px; }
+.docpreview p { margin: 0 0 9px; }
+.docpreview ul, .docpreview ol { padding-left: 22px; margin: 0 0 9px; }
+.docpreview li { margin: 2px 0; }
+.docpreview table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+.docpreview td, .docpreview th { border: 1px solid #ccc; padding: 5px 8px; font-size: 12.5px; vertical-align: top; }
+.docpreview th { background: #f4f4f4; font-weight: bold; }
+.docpreview img { max-width: 100%; height: auto; }
+.docpreview blockquote { margin: 10px 0 10px 16px; padding-left: 10px; border-left: 3px solid var(--line); color: var(--muted); font-style: italic; }
+.docpreview a { color: var(--accent); }
+.docpreview strong, .docpreview b { font-weight: bold; }
+.docpreview em, .docpreview i { font-style: italic; }
+
+/* Warning banner variant */
+.warn-banner {
+  font-size: 12.5px;
+  background: var(--accent-soft);
+  color: var(--ink);
+  border-radius: 10px;
+  padding: 11px 14px;
+  line-height: 1.45;
+}
+.warn-banner strong { color: var(--accent); }
+
 /* ---- Container queries (mobile) ---- */
 @container (max-width: 580px) {
   .htitle { font-size: 31px; }
