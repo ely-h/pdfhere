@@ -5,7 +5,7 @@ export default function PageNumbers() {
     <ToolLayout
       title="Page numbers"
       subtitle="Configure la position et le format des numéros."
-      reassurance="Traitement local — aucun fichier envoyé."
+      reassurance="Traitement local - aucun fichier envoyé."
     >
       <div className="tool-body">
         <p style={{ color: 'var(--muted)', fontSize: 13 }}>Outil en cours de développement.</p>

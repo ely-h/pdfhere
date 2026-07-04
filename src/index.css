@@ -26,7 +26,7 @@ body {
 /* SVG icon base */
 .ic { display: block; stroke-linecap: round; stroke-linejoin: round; }
 
-/* App container — enables container queries */
+/* App container - enables container queries */
 .app-root { container-type: inline-size; min-height: 100vh; }
 
 /* ---- Home header (sticky nav bar) ---- */

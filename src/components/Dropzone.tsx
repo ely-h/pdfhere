@@ -14,7 +14,7 @@ export function Dropzone({
   multiple = false,
   onFiles,
   title = 'Dépose tes fichiers ici',
-  subtitle = 'ou clique pour parcourir — rien n\'est envoyé',
+  subtitle = 'ou clique pour parcourir - rien n\'est envoyé',
 }: DropzoneProps) {
   const [over, setOver] = useState(false)
 

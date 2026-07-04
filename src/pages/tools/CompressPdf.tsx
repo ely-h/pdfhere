@@ -80,7 +80,7 @@ export default function CompressPdf() {
             accept="application/pdf"
             onFiles={handleFile}
             title="Dépose ton PDF ici"
-            subtitle="ou clique pour parcourir — rien n'est envoyé"
+            subtitle="ou clique pour parcourir - rien n'est envoyé"
           />
         ) : (
           <>

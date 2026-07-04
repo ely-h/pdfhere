@@ -127,7 +127,7 @@ export default function SplitPdf() {
           description={
             isBurst
               ? 'Tes fichiers ont été téléchargés directement dans ton dossier de téléchargements.'
-              : 'Tes pages sont prêtes — extraites localement, sans aucun envoi.'
+              : 'Tes pages sont prêtes - extraites localement, sans aucun envoi.'
           }
           filename={result.filename}
           meta={result.meta}
@@ -148,7 +148,7 @@ export default function SplitPdf() {
             accept="application/pdf"
             onFiles={handleFile}
             title="Dépose ton PDF ici"
-            subtitle="ou clique pour parcourir — rien n'est envoyé"
+            subtitle="ou clique pour parcourir - rien n'est envoyé"
           />
         </div>
       )}
@@ -202,7 +202,7 @@ export default function SplitPdf() {
           <div className="tfoot">
             <div className="reassure">
               <IconShieldCheck size={14} />
-              Miniatures rendues par ton navigateur — aucune page envoyée.
+              Miniatures rendues par ton navigateur - aucune page envoyée.
             </div>
             {error && <p style={{ fontSize: 12, color: 'var(--accent)', margin: 0 }}>{error}</p>}
             <button

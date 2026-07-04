@@ -1,4 +1,4 @@
-// pdfjs-dist rendering — lazy loaded; never imported at module top level from pages
+// pdfjs-dist rendering - lazy loaded; never imported at module top level from pages
 import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url'
 
 let _lib: typeof import('pdfjs-dist') | null = null

@@ -98,11 +98,6 @@ Tout le travail dans des fonctions pures dans `lib/`, l'UI ne fait qu'appeler.
 - GitHub Actions pour build + deploy sur gh-pages, comme Skein
 - Username GitHub : ely-h
 
-## Workflow git
-
-- Une branche par outil ou par feature. Jamais de dev direct sur main.
-- Nommage : feat/<nom-outil> ou chore/<tache>. Ex: feat/merge-pdf, chore/scaffold.
-- Commit atomiques sur la branche, puis merge dans main une fois l'étape validée.
 
 ## Style
 

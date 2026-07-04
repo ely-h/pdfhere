@@ -103,7 +103,7 @@ export default function MergePdf() {
       <ToolLayout title="Merge PDF" subtitle="">
         <ResultScreen
           title="Fusion terminée"
-          description="Ton PDF est prêt — assemblé entièrement sur ton appareil. Aucune donnée n'a quitté ton navigateur."
+          description="Ton PDF est prêt - assemblé entièrement sur ton appareil. Aucune donnée n'a quitté ton navigateur."
           filename="document-fusionne.pdf"
           meta={`${result.pages} pages · ${formatSize(result.blob.size)}`}
           blob={result.blob}
@@ -124,7 +124,7 @@ export default function MergePdf() {
             multiple
             onFiles={addFiles}
             title="Dépose tes PDF ici"
-            subtitle="ou clique pour parcourir — rien n'est envoyé"
+            subtitle="ou clique pour parcourir - rien n'est envoyé"
           />
 
           {entries.length > 0 && (
@@ -220,7 +220,7 @@ export default function MergePdf() {
             onClick={handleMerge}
           >
             <IconMerge size={18} />
-            Fusionner{totalPages > 0 ? ` — ${totalPages} pages` : ''}
+            Fusionner{totalPages > 0 ? ` - ${totalPages} pages` : ''}
           </button>
 
           <button

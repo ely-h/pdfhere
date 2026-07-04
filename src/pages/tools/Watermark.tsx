@@ -5,7 +5,7 @@ export default function Watermark() {
     <ToolLayout
       title="Watermark"
       subtitle="Ajoute un texte en filigrane sur tes pages."
-      reassurance="Traitement local — aucun fichier envoyé."
+      reassurance="Traitement local - aucun fichier envoyé."
     >
       <div className="tool-body">
         <p style={{ color: 'var(--muted)', fontSize: 13 }}>Outil en cours de développement.</p>
