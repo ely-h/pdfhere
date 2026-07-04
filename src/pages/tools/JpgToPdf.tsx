@@ -1,15 +1,12 @@
-import { ToolLayout } from '../../components/ToolLayout'
+import { ImagesToPdfTool } from '../../components/ImagesToPdfTool'
 
 export default function JpgToPdf() {
   return (
-    <ToolLayout
+    <ImagesToPdfTool
+      accept="image/jpeg,image/jpg"
       title="JPG to PDF"
-      subtitle="Assemble tes images en un seul PDF."
-      reassurance="Conversion effectuée localement - aucun fichier envoyé."
-    >
-      <div className="tool-body">
-        <p style={{ color: 'var(--muted)', fontSize: 13 }}>Outil en cours de développement.</p>
-      </div>
-    </ToolLayout>
+      subtitle="Glisse tes JPG pour les réordonner."
+      label="JPG"
+    />
   )
 }
