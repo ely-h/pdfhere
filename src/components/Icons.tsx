@@ -171,6 +171,37 @@ export function IconCheck({ size = 32 }: SvgProps) {
   )
 }
 
+export function IconDragHandle() {
+  return (
+    <svg className="ic" width={11} height={17} viewBox="0 0 12 18" fill="currentColor" stroke="none">
+      <circle cx="4" cy="4" r="1.4" />
+      <circle cx="4" cy="9" r="1.4" />
+      <circle cx="4" cy="14" r="1.4" />
+      <circle cx="8" cy="4" r="1.4" />
+      <circle cx="8" cy="9" r="1.4" />
+      <circle cx="8" cy="14" r="1.4" />
+    </svg>
+  )
+}
+
+export function IconX({ size = 15 }: SvgProps) {
+  return (
+    <Svg size={size} strokeWidth={2}>
+      <line x1="6" y1="6" x2="18" y2="18" />
+      <line x1="18" y1="6" x2="6" y2="18" />
+    </Svg>
+  )
+}
+
+export function IconArrowForward({ size = 22 }: SvgProps) {
+  return (
+    <Svg size={size} strokeWidth={2}>
+      <line x1="5" y1="12" x2="19" y2="12" />
+      <polyline points="13,6 19,12 13,18" />
+    </Svg>
+  )
+}
+
 const ICON_MAP: Record<IconId, (props: SvgProps) => React.ReactElement> = {
   merge: IconMerge,
   split: IconSplit,

@@ -4,7 +4,7 @@ import { IconArrowLeft, IconShieldCheck } from './Icons'
 interface ToolLayoutProps {
   title: string
   subtitle: string
-  reassurance: string
+  reassurance?: string
   children: React.ReactNode
 }
 
@@ -29,12 +29,14 @@ export function ToolLayout({ title, subtitle, reassurance, children }: ToolLayou
 
       {children}
 
-      <div className="tool-body">
-        <div className="reassure">
-          <IconShieldCheck size={14} />
-          {reassurance}
+      {reassurance && (
+        <div className="tool-body" style={{ paddingTop: 0 }}>
+          <div className="reassure">
+            <IconShieldCheck size={14} />
+            {reassurance}
+          </div>
         </div>
-      </div>
+      )}
     </>
   )
 }
