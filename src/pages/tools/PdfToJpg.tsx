@@ -1,10 +1,15 @@
-import { Link } from 'react-router-dom'
+import { ToolLayout } from '../../components/ToolLayout'
 
 export default function PdfToJpg() {
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center gap-4">
-      <p className="text-gray-500">PDF vers JPG - à venir</p>
-      <Link to="/" className="text-sm text-blue-600 hover:underline">Retour</Link>
-    </div>
+    <ToolLayout
+      title="PDF to JPG"
+      subtitle="Exporte chaque page du PDF en image."
+      reassurance="Export effectué dans ton navigateur — aucune page envoyée."
+    >
+      <div className="tool-body">
+        <p style={{ color: 'var(--muted)', fontSize: 13 }}>Outil en cours de développement.</p>
+      </div>
+    </ToolLayout>
   )
 }

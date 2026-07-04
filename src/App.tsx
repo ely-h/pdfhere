@@ -15,20 +15,22 @@ import WordToPdf from './pages/tools/WordToPdf'
 export default function App() {
   return (
     <HashRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/merge" element={<MergePdf />} />
-        <Route path="/split" element={<SplitPdf />} />
-        <Route path="/compress" element={<CompressPdf />} />
-        <Route path="/jpg-to-pdf" element={<JpgToPdf />} />
-        <Route path="/png-to-pdf" element={<PngToPdf />} />
-        <Route path="/pdf-to-jpg" element={<PdfToJpg />} />
-        <Route path="/rotate" element={<RotatePdf />} />
-        <Route path="/delete-pages" element={<DeletePages />} />
-        <Route path="/page-numbers" element={<PageNumbers />} />
-        <Route path="/watermark" element={<Watermark />} />
-        <Route path="/word-to-pdf" element={<WordToPdf />} />
-      </Routes>
+      <div className="app-root">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/merge" element={<MergePdf />} />
+          <Route path="/split" element={<SplitPdf />} />
+          <Route path="/compress" element={<CompressPdf />} />
+          <Route path="/jpg-to-pdf" element={<JpgToPdf />} />
+          <Route path="/png-to-pdf" element={<PngToPdf />} />
+          <Route path="/pdf-to-jpg" element={<PdfToJpg />} />
+          <Route path="/rotate" element={<RotatePdf />} />
+          <Route path="/delete-pages" element={<DeletePages />} />
+          <Route path="/page-numbers" element={<PageNumbers />} />
+          <Route path="/watermark" element={<Watermark />} />
+          <Route path="/word-to-pdf" element={<WordToPdf />} />
+        </Routes>
+      </div>
     </HashRouter>
   )
 }

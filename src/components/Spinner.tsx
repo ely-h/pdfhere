@@ -1,9 +1,11 @@
 export function Spinner() {
   return (
-    <div
-      className="w-6 h-6 rounded-full border-2 border-gray-200 border-t-gray-700 animate-spin"
-      role="status"
-      aria-label="Chargement"
-    />
+    <div className="proc" role="status" aria-label="Traitement en cours">
+      <div className="procbar">
+        <div className="procfill" />
+      </div>
+      <div className="proctext">Traitement sur ton appareil…</div>
+      <div className="procsub">// aucun upload · 100% local</div>
+    </div>
   )
 }

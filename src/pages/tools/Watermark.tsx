@@ -1,10 +1,15 @@
-import { Link } from 'react-router-dom'
+import { ToolLayout } from '../../components/ToolLayout'
 
 export default function Watermark() {
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center gap-4">
-      <p className="text-gray-500">Filigrane - à venir</p>
-      <Link to="/" className="text-sm text-blue-600 hover:underline">Retour</Link>
-    </div>
+    <ToolLayout
+      title="Watermark"
+      subtitle="Ajoute un texte en filigrane sur tes pages."
+      reassurance="Traitement local — aucun fichier envoyé."
+    >
+      <div className="tool-body">
+        <p style={{ color: 'var(--muted)', fontSize: 13 }}>Outil en cours de développement.</p>
+      </div>
+    </ToolLayout>
   )
 }

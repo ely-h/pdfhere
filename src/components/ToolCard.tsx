@@ -1,21 +1,42 @@
 import { Link } from 'react-router-dom'
-import { type Tool, CATEGORY_COLOR } from '../lib/tools'
+import type { Tool } from '../lib/tools'
+import { ToolIcon, IconArrowRight } from './Icons'
 
 interface ToolCardProps {
   tool: Tool
 }
 
 export function ToolCard({ tool }: ToolCardProps) {
-  const { bg } = CATEGORY_COLOR[tool.category]
-  return (
-    <Link to={tool.route} className="block group">
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 h-full hover:shadow-md transition-shadow">
-        <div className={`w-12 h-12 rounded-xl ${bg} flex items-center justify-center text-2xl mb-3`}>
-          {tool.icon}
-        </div>
-        <h3 className="font-semibold text-gray-900 mb-1 text-sm">{tool.title}</h3>
-        <p className="text-xs text-gray-500 leading-relaxed">{tool.description}</p>
+  const tileClass = [
+    'tile',
+    tool.live ? 'tile-live' : '',
+    tool.hot ? 'tile-hot' : '',
+  ].filter(Boolean).join(' ')
+
+  const glyphClass = tool.hot ? 'glyph glyph-w' : 'glyph'
+
+  if (!tool.live) {
+    return (
+      <div className={tileClass}>
+        <span className={glyphClass}>
+          <ToolIcon id={tool.icon} />
+        </span>
+        <span className="tname">{tool.title}</span>
+        <span className="tdesc">{tool.description}</span>
       </div>
+    )
+  }
+
+  return (
+    <Link to={tool.route} className={tileClass}>
+      <span className={glyphClass}>
+        <ToolIcon id={tool.icon} />
+      </span>
+      <span className="tname">{tool.title}</span>
+      <span className="tdesc">{tool.description}</span>
+      <span className="arr">
+        <IconArrowRight />
+      </span>
     </Link>
   )
 }

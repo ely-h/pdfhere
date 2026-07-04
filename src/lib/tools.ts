@@ -1,108 +1,126 @@
 export type Category = 'Organiser' | 'Optimiser' | 'Convertir'
 
+export type IconId =
+  | 'merge'
+  | 'split'
+  | 'rotate'
+  | 'delete'
+  | 'compress'
+  | 'page-numbers'
+  | 'watermark'
+  | 'img-to-pdf'
+  | 'pdf-to-img'
+  | 'word-to-pdf'
+
 export interface Tool {
   id: string
   title: string
   description: string
-  icon: string
+  icon: IconId
   route: string
   category: Category
+  hot?: boolean
+  live?: boolean
 }
 
 export const CATEGORIES: Category[] = ['Organiser', 'Optimiser', 'Convertir']
 
-export const CATEGORY_COLOR: Record<Category, { bg: string; badge: string }> = {
-  Organiser: { bg: 'bg-orange-50', badge: 'bg-orange-100 text-orange-700' },
-  Optimiser: { bg: 'bg-green-50', badge: 'bg-green-100 text-green-700' },
-  Convertir: { bg: 'bg-blue-50', badge: 'bg-blue-100 text-blue-700' },
+export const CATEGORY_COUNTS: Record<Category, number> = {
+  Organiser: 4,
+  Optimiser: 3,
+  Convertir: 4,
 }
 
 export const TOOLS: Tool[] = [
   {
     id: 'merge',
-    title: 'Fusionner PDF',
-    description: 'Combine plusieurs fichiers PDF en un seul, dans l\'ordre voulu.',
-    icon: '🔀',
+    title: 'Merge PDF',
+    description: 'Fusionner plusieurs PDF',
+    icon: 'merge',
     route: '/merge',
     category: 'Organiser',
+    hot: true,
+    live: true,
   },
   {
     id: 'split',
-    title: 'Diviser PDF',
-    description: 'Extrait une plage de pages ou éclate un PDF en fichiers séparés.',
-    icon: '✂️',
+    title: 'Split PDF',
+    description: 'Extraire une plage de pages',
+    icon: 'split',
     route: '/split',
     category: 'Organiser',
+    live: true,
   },
   {
     id: 'rotate',
-    title: 'Rotation PDF',
-    description: 'Pivote des pages individuellement ou tout le document.',
-    icon: '🔄',
+    title: 'Rotate PDF',
+    description: 'Pivoter pages ou document',
+    icon: 'rotate',
     route: '/rotate',
     category: 'Organiser',
   },
   {
     id: 'delete-pages',
-    title: 'Supprimer des pages',
-    description: 'Supprime les pages sélectionnées d\'un PDF.',
-    icon: '🗑️',
+    title: 'Delete pages',
+    description: 'Supprimer les pages choisies',
+    icon: 'delete',
     route: '/delete-pages',
     category: 'Organiser',
   },
   {
+    id: 'compress',
+    title: 'Compress PDF',
+    description: 'Réduire la taille du fichier',
+    icon: 'compress',
+    route: '/compress',
+    category: 'Optimiser',
+    live: true,
+  },
+  {
     id: 'page-numbers',
-    title: 'Numéros de page',
-    description: 'Ajoute des numéros de page configurables (position, format).',
-    icon: '🔢',
+    title: 'Page numbers',
+    description: 'Ajouter des numéros',
+    icon: 'page-numbers',
     route: '/page-numbers',
-    category: 'Organiser',
+    category: 'Optimiser',
   },
   {
     id: 'watermark',
-    title: 'Filigrane',
-    description: 'Ajoute un texte en filigrane sur chaque page (opacité, angle).',
-    icon: '💧',
+    title: 'Watermark',
+    description: 'Filigrane texte',
+    icon: 'watermark',
     route: '/watermark',
-    category: 'Organiser',
-  },
-  {
-    id: 'compress',
-    title: 'Compresser PDF',
-    description: 'Réduit la taille du fichier en optimisant les images intégrées.',
-    icon: '🗜️',
-    route: '/compress',
     category: 'Optimiser',
   },
   {
     id: 'jpg-to-pdf',
-    title: 'JPG vers PDF',
-    description: 'Convertit une ou plusieurs images JPG en un seul PDF.',
-    icon: '🖼️',
+    title: 'JPG to PDF',
+    description: 'Images → un PDF',
+    icon: 'img-to-pdf',
     route: '/jpg-to-pdf',
     category: 'Convertir',
   },
   {
     id: 'png-to-pdf',
-    title: 'PNG vers PDF',
-    description: 'Convertit une ou plusieurs images PNG en un seul PDF.',
-    icon: '🖼️',
+    title: 'PNG to PDF',
+    description: 'Images → un PDF',
+    icon: 'img-to-pdf',
     route: '/png-to-pdf',
     category: 'Convertir',
   },
   {
     id: 'pdf-to-jpg',
-    title: 'PDF vers JPG',
-    description: 'Exporte chaque page du PDF en image JPG, téléchargeables en zip.',
-    icon: '📷',
+    title: 'PDF to JPG',
+    description: 'Chaque page en image',
+    icon: 'pdf-to-img',
     route: '/pdf-to-jpg',
     category: 'Convertir',
   },
   {
     id: 'word-to-pdf',
-    title: 'Word vers PDF',
-    description: 'Convertit un fichier .docx en PDF directement dans le navigateur.',
-    icon: '📝',
+    title: 'Word to PDF',
+    description: '.docx → PDF · bonus',
+    icon: 'word-to-pdf',
     route: '/word-to-pdf',
     category: 'Convertir',
   },

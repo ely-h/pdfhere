@@ -1,10 +1,15 @@
-import { Link } from 'react-router-dom'
+import { ToolLayout } from '../../components/ToolLayout'
 
 export default function RotatePdf() {
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center gap-4">
-      <p className="text-gray-500">Rotation PDF - à venir</p>
-      <Link to="/" className="text-sm text-blue-600 hover:underline">Retour</Link>
-    </div>
+    <ToolLayout
+      title="Rotate PDF"
+      subtitle="Sélectionne les pages à faire pivoter."
+      reassurance="Rotation calculée sur ton appareil. Rien n'est envoyé."
+    >
+      <div className="tool-body">
+        <p style={{ color: 'var(--muted)', fontSize: 13 }}>Outil en cours de développement.</p>
+      </div>
+    </ToolLayout>
   )
 }

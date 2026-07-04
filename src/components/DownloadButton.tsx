@@ -1,4 +1,5 @@
 import { downloadBlob } from '../lib/download'
+import { IconDownload } from './Icons'
 
 interface DownloadButtonProps {
   blob: Blob | null
@@ -11,8 +12,10 @@ export function DownloadButton({ blob, filename }: DownloadButtonProps) {
       type="button"
       disabled={blob === null}
       onClick={() => { if (blob) downloadBlob(blob, filename) }}
-      className="px-5 py-2.5 bg-blue-600 text-white rounded-lg font-medium text-sm disabled:opacity-40 hover:bg-blue-700 transition-colors"
+      className="btn-primary"
+      style={{ padding: '15px 30px' }}
     >
+      <IconDownload />
       Télécharger
     </button>
   )
