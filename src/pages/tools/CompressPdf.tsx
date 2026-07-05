@@ -4,7 +4,7 @@ import { Dropzone } from '../../components/Dropzone'
 import { Spinner } from '../../components/Spinner'
 import { ResultScreen } from '../../components/ResultScreen'
 import { IconArrowForward, IconCompress, IconShieldCheck } from '../../components/Icons'
-import { formatSize, estimateCompressedSize } from '../../lib/utils'
+import { formatSize } from '../../lib/utils'
 
 interface Result {
   blob: Blob
@@ -25,9 +25,6 @@ export default function CompressPdf() {
     setResult(null)
     setError(null)
   }
-
-  const estimatedBytes = file ? estimateCompressedSize(file.size, compress) : 0
-  const savedPct = Math.round(compress * 0.78)
 
   const qLabel =
     compress < 33 ? 'Qualité maximale' : compress < 70 ? 'Équilibré' : 'Compression forte'
@@ -93,15 +90,14 @@ export default function CompressPdf() {
                 <IconArrowForward />
               </div>
               <div className="cbox cbox-out">
-                <div className="cboxlab">Estimé</div>
-                <div className="cval">{formatSize(estimatedBytes)}</div>
+                <div className="cboxlab">Résultat</div>
+                <div className="cval cval-small">Selon les images du PDF</div>
               </div>
             </div>
 
             <div className="sliderwrap">
               <div className="slabel">
                 <span className="qlabel">{qLabel}</span>
-                <span className="savedtag">−{savedPct}%</span>
               </div>
               <div className="srange">
                 <div className="strack">
@@ -132,7 +128,8 @@ export default function CompressPdf() {
             </button>
 
             <div className="compress-warn">
-              Le PDF compressé est une version image du document. Le texte ne sera plus sélectionnable.
+              Seules les images déjà présentes dans le PDF sont recompressées. Le texte reste
+              intact et sélectionnable. Un PDF sans image gagnera peu.
             </div>
 
             {error && (
@@ -141,7 +138,7 @@ export default function CompressPdf() {
 
             <div className="reassure" style={{ marginTop: 14 }}>
               <IconShieldCheck size={14} />
-              Compression effectuée dans ton navigateur, via canvas JPEG.
+              Compression effectuée dans ton navigateur, image par image.
             </div>
           </>
         )}

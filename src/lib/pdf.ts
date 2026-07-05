@@ -224,23 +224,51 @@ export async function addWatermark(
 
 export async function compressPdf(file: File, compress: number): Promise<Blob> {
   // compress 0 = max quality, 100 = max compression
-  const jpegQ = Math.max(0.05, 1 - (compress / 100) * 0.92)
-  const scale = Math.max(0.7, 1.5 - (compress / 100) * 0.8)
+  const jpegQuality = Math.max(0.1, 1 - (compress / 100) * 0.85)
+  const maxDimension = Math.round(2000 - (compress / 100) * 1400)
 
-  const { renderToCanvases } = await import('./render')
-  const canvases = await renderToCanvases(file, scale)
-
-  const { PDFDocument } = await import('pdf-lib')
-  const out = await PDFDocument.create()
-
-  for (const canvas of canvases) {
-    const blob = await new Promise<Blob>((resolve) =>
-      canvas.toBlob((b) => resolve(b!), 'image/jpeg', jpegQ),
-    )
-    const img = await out.embedJpg(new Uint8Array(await blob.arrayBuffer()))
-    const page = out.addPage([canvas.width, canvas.height])
-    page.drawImage(img, { x: 0, y: 0, width: canvas.width, height: canvas.height })
+  const { PDFDocument, PDFName, PDFDict, PDFRawStream, PDFRef, PDFNumber } = await import(
+    'pdf-lib'
+  )
+  let doc: Awaited<ReturnType<typeof PDFDocument.load>>
+  try {
+    doc = await PDFDocument.load(await file.arrayBuffer())
+  } catch {
+    throw new Error('Fichier corrompu ou non lisible.')
   }
 
-  return new Blob([await out.save()], { type: 'application/pdf' })
+  const { reencodeJpeg } = await import('./imageReencode')
+
+  // Only JPEG-encoded image XObjects are re-encoded: they're the dominant source of
+  // PDF bloat (scans, photos). Everything else (text, vectors, other image filters)
+  // is left untouched, so a text-only PDF gets little to no gain, as expected.
+  const seenRefs = new Set<string>()
+  for (const page of doc.getPages()) {
+    const xobjects = page.node.Resources()?.lookup(PDFName.of('XObject'))
+    if (!(xobjects instanceof PDFDict)) continue
+
+    for (const key of xobjects.keys()) {
+      const ref = xobjects.get(key)
+      if (!(ref instanceof PDFRef) || seenRefs.has(ref.tag)) continue
+      seenRefs.add(ref.tag)
+
+      const stream = doc.context.lookup(ref)
+      if (!(stream instanceof PDFRawStream)) continue
+
+      const subtype = stream.dict.lookup(PDFName.of('Subtype'))
+      const filter = stream.dict.lookup(PDFName.of('Filter'))
+      if (subtype !== PDFName.of('Image') || filter !== PDFName.of('DCTDecode')) continue
+
+      const reencoded = await reencodeJpeg(stream.contents, jpegQuality, maxDimension)
+      if (!reencoded || reencoded.bytes.length >= stream.contents.length) continue
+
+      const newDict = stream.dict.clone(doc.context)
+      newDict.set(PDFName.of('Width'), PDFNumber.of(reencoded.width))
+      newDict.set(PDFName.of('Height'), PDFNumber.of(reencoded.height))
+      newDict.set(PDFName.of('Length'), PDFNumber.of(reencoded.bytes.length))
+      doc.context.assign(ref, PDFRawStream.of(newDict, reencoded.bytes))
+    }
+  }
+
+  return new Blob([await doc.save()], { type: 'application/pdf' })
 }

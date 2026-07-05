@@ -31,26 +31,6 @@ export async function renderThumbnails(file: File, scale = 0.28): Promise<string
   return urls
 }
 
-export async function renderToCanvases(file: File, scale: number): Promise<HTMLCanvasElement[]> {
-  const lib = await pdfjs()
-  const doc = await lib.getDocument({ data: await file.arrayBuffer() }).promise
-  const canvases: HTMLCanvasElement[] = []
-
-  for (let n = 1; n <= doc.numPages; n++) {
-    const page = await doc.getPage(n)
-    const vp = page.getViewport({ scale })
-    const canvas = document.createElement('canvas')
-    canvas.width = vp.width
-    canvas.height = vp.height
-    await page.render({ canvas, viewport: vp }).promise
-    canvases.push(canvas)
-    page.cleanup()
-  }
-
-  await doc.cleanup()
-  return canvases
-}
-
 export async function renderToJpegs(file: File, quality = 0.88): Promise<Blob[]> {
   const lib = await pdfjs()
   const doc = await lib.getDocument({ data: await file.arrayBuffer() }).promise

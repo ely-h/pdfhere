@@ -74,6 +74,22 @@ body {
 /* ---- Home body ---- */
 .home-body { padding: 30px 26px 36px; max-width: 1120px; margin: 0 auto; }
 
+/* ---- Footer ---- */
+.pfoot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 22px 26px 30px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.pfoot a { color: var(--muted); text-decoration: underline; }
+.pfoot a:hover { color: var(--accent); }
+.fdot { opacity: 0.6; }
+
 .htitle {
   font-family: 'Bricolage Grotesque', sans-serif;
   font-weight: 800;
@@ -579,13 +595,13 @@ body {
 .cbox-out { background: var(--accent); border-color: var(--accent); color: #fff; }
 .cboxlab { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; opacity: .7; }
 .cval { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 30px; margin-top: 6px; letter-spacing: -.02em; }
+.cval-small { font-size: 15px; margin-top: 10px; }
 
 .carrow { display: flex; align-items: center; color: var(--muted); flex-shrink: 0; }
 
 .sliderwrap { background: var(--surf); border: 1px solid var(--line); border-radius: 16px; padding: 20px 22px; }
 .slabel { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
 .qlabel { font-weight: 800; font-size: 15px; font-family: 'Bricolage Grotesque', sans-serif; }
-.savedtag { font-size: 12px; font-weight: 800; color: var(--accent); background: var(--accent-soft); padding: 5px 11px; border-radius: 999px; }
 
 .srange { position: relative; height: 28px; display: flex; align-items: center; }
 .strack { position: absolute; left: 0; right: 0; height: 8px; border-radius: 999px; background: var(--surf2); overflow: hidden; pointer-events: none; }

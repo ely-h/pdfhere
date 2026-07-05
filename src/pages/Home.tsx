@@ -55,6 +55,16 @@ export default function Home() {
           })}
         </div>
       </main>
+
+      <footer className="pfoot">
+        <span>© {new Date().getFullYear()} ely-h</span>
+        <span className="fdot">·</span>
+        <span>React + Vite, 100% client-side</span>
+        <span className="fdot">·</span>
+        <a href="https://github.com/ely-h/pdfhere" target="_blank" rel="noreferrer">
+          GitHub
+        </a>
+      </footer>
     </>
   )
 }

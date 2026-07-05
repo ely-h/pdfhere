@@ -20,7 +20,7 @@ vi.mock('pdfjs-dist', () => ({
   }),
 }))
 
-import { renderThumbnails, renderToCanvases, renderToJpegs } from './render'
+import { renderThumbnails, renderToJpegs } from './render'
 import { makeTestPdf, toFile } from './test-fixtures'
 
 beforeEach(() => {
@@ -47,25 +47,6 @@ describe('renderThumbnails', () => {
     const file = toFile(new Uint8Array([1, 2, 3]), 'bad.pdf')
 
     await expect(renderThumbnails(file)).rejects.toThrow()
-  })
-})
-
-describe('renderToCanvases', () => {
-  it('returns one canvas per page, sized from the viewport', async () => {
-    const file = toFile(await makeTestPdf(2), 'src.pdf')
-    const canvases = await renderToCanvases(file, 1)
-
-    expect(canvases).toHaveLength(2)
-    expect(canvases[0].width).toBe(10)
-    expect(canvases[0].height).toBe(10)
-  })
-
-  it('returns an empty array for a PDF with zero pages', async () => {
-    mockPdfState.numPages = 0
-    const file = toFile(await makeTestPdf(0), 'empty.pdf')
-    const canvases = await renderToCanvases(file, 1)
-
-    expect(canvases).toHaveLength(0)
   })
 })
 
