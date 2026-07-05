@@ -20,10 +20,13 @@ export async function reencodeJpeg(
   canvas.width = width
   canvas.height = height
   const ctx = canvas.getContext('2d')
-  bitmap.close()
-  if (!ctx) return null
+  if (!ctx) {
+    bitmap.close()
+    return null
+  }
 
   ctx.drawImage(bitmap, 0, 0, width, height)
+  bitmap.close()
 
   const blob = await new Promise<Blob>((resolve) =>
     canvas.toBlob((b) => resolve(b!), 'image/jpeg', quality),
