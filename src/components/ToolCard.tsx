@@ -7,18 +7,12 @@ interface ToolCardProps {
 }
 
 export function ToolCard({ tool }: ToolCardProps) {
-  const tileClass = [
-    'tile',
-    tool.live ? 'tile-live' : '',
-    tool.hot ? 'tile-hot' : '',
-  ].filter(Boolean).join(' ')
-
-  const glyphClass = tool.hot ? 'glyph glyph-w' : 'glyph'
+  const tileClass = ['tile', tool.live ? 'tile-live' : ''].filter(Boolean).join(' ')
 
   if (!tool.live) {
     return (
       <div className={tileClass}>
-        <span className={glyphClass}>
+        <span className="glyph">
           <ToolIcon id={tool.icon} />
         </span>
         <span className="tname">{tool.title}</span>
@@ -29,7 +23,7 @@ export function ToolCard({ tool }: ToolCardProps) {
 
   return (
     <Link to={tool.route} className={tileClass}>
-      <span className={glyphClass}>
+      <span className="glyph">
         <ToolIcon id={tool.icon} />
       </span>
       <span className="tname">{tool.title}</span>

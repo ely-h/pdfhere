@@ -19,7 +19,6 @@ export interface Tool {
   icon: IconId
   route: string
   category: Category
-  hot?: boolean
   live?: boolean
 }
 
@@ -39,7 +38,6 @@ export const TOOLS: Tool[] = [
     icon: 'merge',
     route: '/merge',
     category: 'Organiser',
-    hot: true,
     live: true,
   },
   {
