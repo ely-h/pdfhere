@@ -58,6 +58,7 @@ export const TOOLS: Tool[] = [
     icon: 'rotate',
     route: '/rotate',
     category: 'Organiser',
+    live: true,
   },
   {
     id: 'delete-pages',
@@ -66,6 +67,7 @@ export const TOOLS: Tool[] = [
     icon: 'delete',
     route: '/delete-pages',
     category: 'Organiser',
+    live: true,
   },
   {
     id: 'compress',
@@ -83,6 +85,7 @@ export const TOOLS: Tool[] = [
     icon: 'page-numbers',
     route: '/page-numbers',
     category: 'Optimiser',
+    live: true,
   },
   {
     id: 'watermark',
@@ -91,6 +94,7 @@ export const TOOLS: Tool[] = [
     icon: 'watermark',
     route: '/watermark',
     category: 'Optimiser',
+    live: true,
   },
   {
     id: 'jpg-to-pdf',
@@ -99,6 +103,7 @@ export const TOOLS: Tool[] = [
     icon: 'img-to-pdf',
     route: '/jpg-to-pdf',
     category: 'Convertir',
+    live: true,
   },
   {
     id: 'png-to-pdf',
@@ -107,6 +112,7 @@ export const TOOLS: Tool[] = [
     icon: 'img-to-pdf',
     route: '/png-to-pdf',
     category: 'Convertir',
+    live: true,
   },
   {
     id: 'pdf-to-jpg',
@@ -115,6 +121,7 @@ export const TOOLS: Tool[] = [
     icon: 'pdf-to-img',
     route: '/pdf-to-jpg',
     category: 'Convertir',
+    live: true,
   },
   {
     id: 'word-to-pdf',
@@ -123,5 +130,6 @@ export const TOOLS: Tool[] = [
     icon: 'word-to-pdf',
     route: '/word-to-pdf',
     category: 'Convertir',
+    live: true,
   },
 ]
